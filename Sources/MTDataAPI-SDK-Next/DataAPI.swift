@@ -13,7 +13,7 @@ public struct DataAPI {
         "\(apiBaseURL)/\(endpointVersion)"
     }
     
-    public init(session: URLSession = URLSession.shared) {
+    public init(session: URLSession = URLSession(configuration: .ephemeral)) {
         self.session = session
     }
     
@@ -93,7 +93,6 @@ extension DataAPI {
         return session.dataTaskPublisher(for: request)
             .map(\.data)
             .decode(type: T.self, decoder: JSONDecoder())
-            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
     
